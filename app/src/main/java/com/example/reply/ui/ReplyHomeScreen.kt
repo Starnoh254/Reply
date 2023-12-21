@@ -39,6 +39,7 @@ import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,6 +48,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.reply.R
 import com.example.reply.data.Email
 import com.example.reply.data.MailboxType
@@ -250,6 +252,25 @@ private fun NavigationDrawerHeader(
 @Composable
 fun MyPreview(){
 
+    val viewModel: ReplyViewModel = viewModel()
+    val replyUiState = viewModel.uiState.collectAsState().value
+
+    ReplyHomeScreen(
+        replyUiState = replyUiState,
+        onTabPressed = { mailboxType: MailboxType ->
+            viewModel.updateCurrentMailbox(mailboxType = mailboxType)
+            viewModel.resetHomeScreenStates()
+        },
+        onEmailCardPressed = { email: Email ->
+            viewModel.updateDetailsScreenStates(
+                email = email
+            )
+        },
+        onDetailScreenBackPressed = {
+            viewModel.resetHomeScreenStates()
+        },
+        modifier = Modifier
+    )
 }
 
 private data class NavigationItemContent(
