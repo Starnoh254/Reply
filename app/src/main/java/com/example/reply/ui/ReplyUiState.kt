@@ -19,6 +19,7 @@ import com.example.reply.data.Email
 import com.example.reply.data.MailboxType
 import com.example.reply.data.local.LocalEmailsDataProvider
 
+// data class for the ui state
 data class ReplyUiState(
     val mailboxes: Map<MailboxType, List<Email>> = emptyMap(),
     val currentMailbox: MailboxType = MailboxType.Inbox,
